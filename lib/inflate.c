@@ -841,6 +841,7 @@ STATIC int noinline INIT inflate_dynamic(void)
   register ulg b;       /* bit buffer */
   register unsigned k;  /* number of bits in bit buffer */
   int ret;
+  int n_test;
 
 DEBG("<dyn");
 
@@ -869,10 +870,11 @@ DEBG("<dyn");
   nb = 4 + ((unsigned)b & 0xf);         /* number of bit length codes */
   DUMPBITS(4)
 #ifdef PKZIP_BUG_WORKAROUND
-  if (nl > 288 || nd > 32)
+  n_test = (nl > 288 || nd > 32);
 #else
-  if (nl > 286 || nd > 30)
+  n_test = (nl > 286 || nd > 30);
 #endif
+  if (n_test)
   {
     ret = 1;             /* bad lengths */
     goto out;
